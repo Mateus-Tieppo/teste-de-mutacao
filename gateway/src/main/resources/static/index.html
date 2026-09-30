@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Microsserviços — Peças, Clientes e Representantes</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <h1>Cadastro via API Gateway</h1>
+    <p>Todas as requisições desta página vão para o Gateway (<code id="origem"></code>),
+        que as encaminha ao microsserviço certo via Eureka.</p>
+    <nav>
+        <button class="aba ativa" data-aba="pecas">Peças</button>
+        <button class="aba" data-aba="clientes">Clientes</button>
+        <button class="aba" data-aba="representantes">Representantes</button>
+    </nav>
+</header>
+
+<main>
+    <!-- Peças -->
+    <section id="pecas" class="painel ativo">
+        <form class="cartao" data-recurso="pecas" data-acao="cadastrar">
+            <h2>Cadastrar peça</h2>
+            <label>Nº de identificação <input name="id" type="number" min="1" required></label>
+            <label>Nome <input name="nome" required></label>
+            <label>Descrição <input name="descricao" required></label>
+            <button>Cadastrar</button>
+        </form>
+        <form class="cartao" data-recurso="pecas" data-acao="porChave">
+            <h2>Consultar por id</h2>
+            <label>Nº de identificação <input name="chave" type="number" min="1" required></label>
+            <button>Consultar</button>
+        </form>
+        <form class="cartao" data-recurso="pecas" data-acao="porNome">
+            <h2>Consultar por nome</h2>
+            <label>Nome (ou parte) <input name="nome" required></label>
+            <button>Consultar</button>
+        </form>
+        <div class="cartao">
+            <h2>Todas as peças</h2>
+            <button data-recurso="pecas" data-acao="listar">Listar todas</button>
+        </div>
+    </section>
+
+    <!-- Clientes -->
+    <section id="clientes" class="painel">
+        <form class="cartao" data-recurso="clientes" data-acao="cadastrar">
+            <h2>Cadastrar cliente</h2>
+            <label>CPF <input name="cpf" placeholder="123.456.789-01" required></label>
+            <label>Nome <input name="nome" required></label>
+            <button>Cadastrar</button>
+        </form>
+        <form class="cartao" data-recurso="clientes" data-acao="porChave">
+            <h2>Consultar por CPF</h2>
+            <label>CPF <input name="chave" required></label>
+            <button>Consultar</button>
+        </form>
+        <form class="cartao" data-recurso="clientes" data-acao="porNome">
+            <h2>Consultar por nome</h2>
+            <label>Nome (ou parte) <input name="nome" required></label>
+            <button>Consultar</button>
+        </form>
+        <div class="cartao">
+            <h2>Todos os clientes</h2>
+            <button data-recurso="clientes" data-acao="listar">Listar todos</button>
+        </div>
+    </section>
+
+    <!-- Representantes -->
+    <section id="representantes" class="painel">
+        <form class="cartao" data-recurso="representantes" data-acao="cadastrar">
+            <h2>Cadastrar representante</h2>
+            <label>CPF <input name="cpf" placeholder="123.456.789-01" required></label>
+            <label>Nome <input name="nome" required></label>
+            <button>Cadastrar</button>
+        </form>
+        <form class="cartao" data-recurso="representantes" data-acao="porChave">
+            <h2>Consultar por CPF</h2>
+            <label>CPF <input name="chave" required></label>
+            <button>Consultar</button>
+        </form>
+        <form class="cartao" data-recurso="representantes" data-acao="porNome">
+            <h2>Consultar por nome</h2>
+            <label>Nome (ou parte) <input name="nome" required></label>
+            <button>Consultar</button>
+        </form>
+        <div class="cartao">
+            <h2>Todos os representantes</h2>
+            <button data-recurso="representantes" data-acao="listar">Listar todos</button>
+        </div>
+    </section>
+
+    <section class="cartao resultado">
+        <h2>Resultado</h2>
+        <p id="requisicao" class="requisicao">Nenhuma requisição feita ainda.</p>
+        <div id="tabela"></div>
+        <pre id="erro" hidden></pre>
+    </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

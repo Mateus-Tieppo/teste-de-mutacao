@@ -23,11 +23,14 @@
         <module>pecas-service</module>
         <module>clientes-service</module>
         <module>representantes-service</module>
+        <module>testes-integracao</module>
     </modules>
 
     <properties>
         <java.version>21</java.version>
         <spring-cloud.version>2025.0.0</spring-cloud.version>
+        <pitest.version>1.30.0</pitest.version>
+        <pitest-junit5.version>1.2.3</pitest-junit5.version>
     </properties>
 
     <dependencyManagement>
@@ -41,4 +44,54 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <!--
+                    Teste de mutação (Pitest): altera o código de produção (mutantes)
+                    e verifica se os testes unitários detectam cada alteração.
+                    Roda sob demanda: mvn org.pitest:pitest-maven:mutationCoverage
+                -->
+                <plugin>
+                    <groupId>org.pitest</groupId>
+                    <artifactId>pitest-maven</artifactId>
+                    <version>${pitest.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.pitest</groupId>
+                            <artifactId>pitest-junit5-plugin</artifactId>
+                            <version>${pitest-junit5.version}</version>
+                        </dependency>
+                    </dependencies>
+                    <configuration>
+                        <targetClasses>
+                            <param>com.exemplo.*</param>
+                        </targetClasses>
+                        <excludedClasses>
+                            <!-- classes main() do Spring Boot não têm lógica a testar -->
+                            <param>com.exemplo.*.*Application</param>
+                        </excludedClasses>
+                        <targetTests>
+                            <param>com.exemplo.*</param>
+                        </targetTests>
+                        <excludedTestClasses>
+                            <!-- o teste com contexto completo é lento e não é unitário -->
+                            <param>com.exemplo.*.*IntegracaoTest</param>
+                        </excludedTestClasses>
+                        <mutators>
+                            <mutator>STRONGER</mutator>
+                        </mutators>
+                        <outputFormats>
+                            <param>HTML</param>
+                            <param>XML</param>
+                        </outputFormats>
+                        <timestampedReports>false</timestampedReports>
+                        <!-- falha o build se menos de 80% dos mutantes forem mortos -->
+                        <mutationThreshold>80</mutationThreshold>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>
