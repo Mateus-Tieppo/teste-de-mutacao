@@ -1,0 +1,15 @@
+# Nos testes não há Config Server nem Eureka: tudo roda local com H2 em memória
+spring:
+  application:
+    name: clientes-service
+  cloud:
+    config:
+      enabled: false
+    discovery:
+      enabled: false
+  datasource:
+    url: jdbc:h2:mem:clientes-teste;DB_CLOSE_DELAY=-1
+
+eureka:
+  client:
+    enabled: false

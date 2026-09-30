@@ -1,0 +1,18 @@
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: pecas
+              uri: lb://pecas-service
+              predicates:
+                - Path=/pecas/**
+            - id: clientes
+              uri: lb://clientes-service
+              predicates:
+                - Path=/clientes/**
+            - id: representantes
+              uri: lb://representantes-service
+              predicates:
+                - Path=/representantes/**
